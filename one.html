@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="Keywords" content="blog"/>
+    <meta name="Description" content="blog"/>
+    <title>Simple</title>
+    <link rel="shortcut icon" href="/static/favicon.png"/>
+    <link rel="stylesheet" type="text/css" href="/main.css" />
+</head>
+<body>
+<div class="main">
+    <div class="header">
+    	<ul id="pages">
+            <li><a href="/">home</a></li>
+            <li><a href="/#/tags">tags</a></li>
+            <li><a href="/#/archive">archive</a></li>
+    	</ul>
+    </div>
+	<div class="wrap-header">
+	<h1>
+    <a href="/" id="title"></a>
+	</h1>
+	</div>
+<div id="md" style="display: none;">
+<!-- markdown -->
+![author](http://e.hiphotos.baidu.com/baike/s%3D220/sign=5a363339aeaf2eddd0f14eebbd100102/574e9258d109b3deb0bda957cebf6c81800a4c8a.jpg)
+**一条萤**- - -声优：村川梨衣
+_ _ _
+介绍：小学五年级学生。由于父母工作的关系从东京搬到了这里。身体成长较早熟，使得外表给人的感觉不像小学生，往往被误认成大人，正崇拜着身为她前辈的小鞠。擅于裁缝，房间内摆了大量手工小鞠娃娃，曾与小鞠两人相约出游时因用心打扮，成熟的穿着及戴着眼镜的外型，小鞠到最后都没有认出来是一条萤。总是给人较年长的气质，某次与莲华被关在兔子小屋时曾经哭泣并大声求救，流露出孩子气的一面。
+<script src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?ff00a5d35e81418e4f069b9915e736f7";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- markdown end -->
+</div>
+<div class="entry" id="main">
+<!-- content -->
+<p><img src="http://e.hiphotos.baidu.com/baike/s%3D220/sign=5a363339aeaf2eddd0f14eebbd100102/574e9258d109b3deb0bda957cebf6c81800a4c8a.jpg" alt="author" title="">
+<strong>一条萤</strong>- - -声优：村川梨衣</p>
+
+<hr>
+
+<p>介绍：小学五年级学生。由于父母工作的关系从东京搬到了这里。身体成长较早熟，使得外表给人的感觉不像小学生，往往被误认成大人，正崇拜着身为她前辈的小鞠。擅于裁缝，房间内摆了大量手工小鞠娃娃，曾与小鞠两人相约出游时因用心打扮，成熟的穿着及戴着眼镜的外型，小鞠到最后都没有认出来是一条萤。总是给人较年长的气质，某次与莲华被关在兔子小屋时曾经哭泣并大声求救，流露出孩子气的一面。</p>
+
+
+
+<!-- content end -->
+</div>
+<br>
+<br>
+    <div id="disqus_thread"></div>
+	<div class="footer">
+		<p>© Copyright 2014 by isnowfy, Designed by isnowfy</p>
+	</div>
+</div>
+<script src="main.js"></script>
+<script id="content" type="text/mustache">
+    <h1>{{title}}</h1>
+    <div class="tag">
+    {{date}}
+    {{#tags}}
+    <a href="/#/tag/{{name}}">#{{name}}</a>
+    {{/tags}}
+    </div>
+</script>
+<script id="pagesTemplate" type="text/mustache">
+    {{#pages}}
+    <li>
+        <a href="{{path}}">{{title}}</a>
+    </li>
+    {{/pages}}
+</script>
+<script>
+$(document).ready(function() {
+    $.ajax({
+        url: "main.json",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+            $("#title").html(data.name);
+            var pagesTemplate = Hogan.compile($("#pagesTemplate").html());
+            var pagesHtml = pagesTemplate.render({"pages": data.pages});
+            $("#pages").append(pagesHtml);
+            //path
+            var path = "one.html";
+            //path end
+            var now = 0;
+            for (var i = 0; i < data.posts.length; ++i)
+                if (path == data.posts[i].path)
+                    now = i;
+            var post = data.posts[now];
+            var tmp = post.tags.split(" ");
+            var tags = [];
+            for (var i = 0; i < tmp.length; ++i)
+                if (tmp[i].length > 0)
+                    tags.push({"name": tmp[i]});
+            var contentTemplate = Hogan.compile($("#content").html());
+            var contentHtml = contentTemplate.render({"title": post.title, "tags": tags, "date": post.date});
+            $("#main").prepend(contentHtml);
+            if (data.disqus_shortname.length > 0) {
+                var disqus_shortname = data.disqus_shortname;
+                (function() {
+                    var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                })();
+            }
+        }
+    });
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ["\\(", "\\)"]], processEscapes: true}});
+</script>
+</body>
+</html>
